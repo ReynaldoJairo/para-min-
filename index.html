@@ -1,0 +1,261 @@
+	<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Min </title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #0b1d3a;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+        }
+
+        h1 {
+            color: #ffb7c5;
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 60px;
+            text-shadow: 0 0 10px rgba(255, 183, 197, 0.5);
+            opacity: 0;
+            animation: fadeIn 2s ease-in-out forwards;
+            animation-delay: 0.5s;
+        }
+
+        /* Jardín / Contenedor de flores */
+        .garden {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            gap: 35px;
+            height: 350px;
+        }
+
+        /* Estructura base de la flor y animación de balanceo */
+        .flower {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            opacity: 0;
+            transform-origin: bottom center;
+            transform: translateY(80px) scale(0);
+            animation: growUp 2.5s cubic-bezier(0.4, 0, 0.2, 1) forwards,
+                      sway 4s ease-in-out infinite alternate;
+        }
+
+        /* Delación de aparición para cada flor */
+        .f1 { animation-delay: 0.5s, 3s; }
+        .f2 { animation-delay: 1.2s, 3.5s; }
+        .f3 { animation-delay: 0.8s, 3.2s; }
+        .f4 { animation-delay: 1.5s, 3.7s; }
+
+        /* Tallos */
+        .stem {
+            width: 8px;
+            height: 200px;
+            background: linear-gradient(to top, #2e7d32, #4caf50);
+            border-radius: 4px;
+            position: relative;
+        }
+
+        .leaf {
+            position: absolute;
+            width: 25px;
+            height: 50px;
+            background: #4caf50;
+            border-radius: 0 100% 0 100%;
+            transform: rotate(-45deg);
+            left: -20px;
+            top: 90px;
+        }
+
+        .leaf.right {
+            border-radius: 100% 0 100% 0;
+            transform: rotate(45deg);
+            left: 6px;
+            top: 60px;
+        }
+
+        /* --- TULIPANES --- */
+        .tulip-head {
+            position: relative;
+            width: 50px;
+            height: 55px;
+            margin-bottom: -5px;
+            z-index: 2;
+        }
+
+        .t-pink .petal { background-color: #ff6584; }
+        .t-pink .center-petal { background-color: #ff4066; }
+        .t-orange .petal { background-color: #ff9800; }
+        .t-orange .center-petal { background-color: #e65100; }
+
+        .petal {
+            position: absolute;
+            width: 30px;
+            height: 55px;
+            border-radius: 100% 100% 0 0;
+            bottom: 0;
+        }
+
+        .petal.left {
+            left: 0;
+            transform: rotate(-20deg);
+            transform-origin: bottom right;
+            z-index: 3;
+        }
+
+        .petal.right {
+            right: 0;
+            transform: rotate(20deg);
+            transform-origin: bottom left;
+            z-index: 3;
+        }
+
+        .center-petal {
+            position: absolute;
+            left: 12px;
+            width: 26px;
+            height: 50px;
+            border-radius: 100% 100% 0 0;
+            bottom: 0;
+            z-index: 1;
+        }
+
+        /* --- LIRIOS (Lilies) --- */
+        .lily-head {
+            position: relative;
+            width: 70px;
+            height: 60px;
+            margin-bottom: -5px;
+            z-index: 2;
+        }
+
+        /* Lirio Blanco/Sutil y Lirio Amarillo */
+        .l-white .l-petal { background-color: #ffffff; border-bottom: 10px solid #e0f2f1; }
+        .l-yellow .l-petal { background-color: #fff176; border-bottom: 10px solid #fbc02d; }
+
+        .l-petal {
+            position: absolute;
+            width: 24px;
+            height: 55px;
+            border-radius: 50% 50% 20% 20%;
+            bottom: 0;
+            transform-origin: bottom center;
+        }
+
+        .l-petal.p1 { left: 23px; transform: scaleY(1.1); z-index: 2; }
+        .l-petal.p2 { left: 8px; transform: rotate(-35deg); z-index: 3; }
+        .l-petal.p3 { left: 38px; transform: rotate(35deg); z-index: 3; }
+        .l-petal.p4 { left: -2px; transform: rotate(-60deg); opacity: 0.8; z-index: 1; }
+        .l-petal.p5 { left: 48px; transform: rotate(60deg); opacity: 0.8; z-index: 1; }
+
+        /* Centro del Lirio (Pistilos) */
+        .lily-center {
+            position: absolute;
+            bottom: 15px;
+            left: 32px;
+            width: 6px;
+            height: 30px;
+            background-color: #ffb300;
+            border-radius: 3px;
+            z-index: 4;
+        }
+        .lily-center::before, .lily-center::after {
+            content: '';
+            position: absolute;
+            width: 4px;
+            height: 25px;
+            background-color: #ffa000;
+            bottom: 0;
+            border-radius: 2px;
+        }
+        .lily-center::before { left: -6px; transform: rotate(-15deg); }
+        .lily-center::after { left: 6px; transform: rotate(15deg); }
+
+
+        /* ANIMACIONES */
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        @keyframes growUp {
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* Efecto de movimiento / viento suave */
+        @keyframes sway {
+            0% { transform: rotate(-3deg); }
+            100% { transform: rotate(3deg); }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Por trabajar tanto 🌷✨</h1>
+
+    <div class="garden">
+        <div class="flower f1 tulip t-pink">
+            <div class="tulip-head">
+                <div class="petal left"></div>
+                <div class="center-petal"></div>
+                <div class="petal right"></div>
+            </div>
+            <div class="stem">
+                <div class="leaf"></div>
+            </div>
+        </div>
+
+        <div class="flower f2 lily l-white">
+            <div class="lily-head">
+                <div class="l-petal p4"></div>
+                <div class="l-petal p2"></div>
+                <div class="l-petal p1"></div>
+                <div class="l-petal p3"></div>
+                <div class="l-petal p5"></div>
+                <div class="lily-center"></div>
+            </div>
+            <div class="stem">
+                <div class="leaf right"></div>
+            </div>
+        </div>
+
+        <div class="flower f3 tulip t-orange">
+            <div class="tulip-head">
+                <div class="petal left"></div>
+                <div class="center-petal"></div>
+                <div class="petal right"></div>
+            </div>
+            <div class="stem">
+                <div class="leaf"></div>
+            </div>
+        </div>
+
+        <div class="flower f4 lily l-yellow">
+            <div class="lily-head">
+                <div class="l-petal p4"></div>
+                <div class="l-petal p2"></div>
+                <div class="l-petal p1"></div>
+                <div class="l-petal p3"></div>
+                <div class="l-petal p5"></div>
+                <div class="lily-center"></div>
+            </div>
+            <div class="stem">
+                <div class="leaf right"></div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>		
